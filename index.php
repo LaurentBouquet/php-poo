@@ -1,27 +1,34 @@
 <?php
 
-include("Personnage.php");
+function chargerClasse(string $classe)
+{
+  include $classe . '.php'; // On inclut la classe correspondante au paramètre passé.
+}
+
+// On enregistre la fonction en autoload 
+// pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
+spl_autoload_register('chargerClasse'); 
+
+print("Pour info, la force petite = ".Personnage::FORCE_PETITE."<br/>");
+print("Pour info, la force moyenne = ".Personnage::FORCE_MOYENNE."<br/>");
+print("Pour info, la force grande = ".Personnage::FORCE_GRANDE."<br/>");
 
 print("<h1>Jeu de combat</h1>");
 
-// $perso = new Personnage();
-// $perso->parler();
-// $perso->gagnerExperience();
-// print("Expérience = ".$perso->afficherExperience());
-
 // On crée deux personnages
 $perso1 = new Personnage('Mario');
-$perso1->setExperience(15);
+Personnage::parler();
 
-$perso2 = new Personnage("Lara", 60, 0);
-$perso2->setExperience(1);
-    
-// Ensuite, on veut que le personnage n°1 frappe le personnage n°2.
+$perso2 = new Personnage("Lara", Personnage::FORCE_MOYENNE, 0);
+Personnage::parler();
+
+
 $perso1->frapper($perso2);
 $perso2->frapper($perso1);
 
-print("<br/>Dégats du joueur n°1 = ".$perso1->getDegats());
-print("<br/>Dégats du joueur n°2 = ".$perso2->getDegats());
+print("<br/><br/>Bilan :");
+print($perso1);
+print($perso2);
 
 
 
