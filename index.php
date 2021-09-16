@@ -9,6 +9,8 @@ function chargerClasse(string $classe)
 // pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
 spl_autoload_register('chargerClasse'); 
 
+include "conf.php";
+
 try {
     $db = new PDO($dsn, $user, $password);
     //$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string

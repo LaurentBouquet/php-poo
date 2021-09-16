@@ -21,14 +21,21 @@ class Personnage
     private static $_texteADire = 'La partie est démarrée. Qui veut se battre !';
     private static $_nbreJoueurs = 0;
 
-    public function __construct(string $nom, int $force = 50, int $degats = 0)
+    public function __construct(array $ligne)
     {
-        $this->setNom($nom); // Initialisation du nom du personnage
-        $this->setForce($force); // Initialisation de la force.
-        $this->setDegats($degats); // Initialisation des dégâts.
-        $this->setExperience(1); // Initialisation de l'expérience à 1.
+        $this->hydrate($ligne);
         self::$_nbreJoueurs++;
         print('<br/> Le personnage "' . $nom . '" est créé !'); // Message s'affichant une fois que tout objet est créé.
+    }
+    
+    // Un tableau de données doit être passé à la fonction (d'où le préfixe "array").
+    public function hydrate(array $ligne)
+    {
+        $this->setNom($ligne['nom']); // Initialisation du nom du personnage
+        $this->setForce((int) $ligne['force']); // Initialisation de la force.
+        $this->setDegats($ligne['degats']); // Initialisation des dégâts.
+        $this->setNiveau($ligne['niveau']); // Initialisation des dégâts.
+        $this->setExperience(1); // Initialisation de l'expérience à 1.
     }
 
     public function __toString(): string
@@ -38,7 +45,6 @@ class Personnage
         . $this->getDegats() . ' / Expérience = '
         . $this->getexperience();
     }
-
 
     public function setId(int $id): Personnage
     {
@@ -70,8 +76,8 @@ class Personnage
     public function getNiveau(): int
     {
         return $this->_niveau;
-    }    
-    
+    }
+
     public function setNom(string $nom): Personnage
     {
         if (!is_string($nom)) // S'il ne s'agit pas d'un texte.
@@ -105,8 +111,7 @@ class Personnage
         // On vérifie qu'on nous donne bien soit une "FORCE_PETITE", soit une "FORCE_MOYENNE", soit une "FORCE_GRANDE".
         if (in_array($force, array(self::FORCE_PETITE, self::FORCE_MOYENNE, self::FORCE_GRANDE))) {
             $this->_force = $force;
-        }
-        else {
+        } else {
             trigger_error('La force n\'est pas correcte', E_USER_ERROR);
             return $this;
         }
@@ -165,7 +170,7 @@ class Personnage
 
     public static function parler()
     { // Nous déclarons une méthode dont le seul but est d'afficher un texte.
-        print('<br/><br/>Je suis le personnage n°'.self::$_nbreJoueurs.' <br/>'.self::$_texteADire.'<br/>');
+        print('<br/><br/>Je suis le personnage n°' . self::$_nbreJoueurs . ' <br/>' . self::$_texteADire . '<br/>');
     }
 
     // Une méthode qui frappera un personnage (suivant la force qu'il a).
