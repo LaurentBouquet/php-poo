@@ -25,17 +25,18 @@ class Personnage
     {
         $this->hydrate($ligne);
         self::$_nbreJoueurs++;
-        print('<br/> Le personnage "' . $nom . '" est créé !'); // Message s'affichant une fois que tout objet est créé.
+        print('<br/> Le personnage "' . $this->getNom() . '" est créé !'); // Message s'affichant une fois que tout objet est créé.
     }
-    
+
     // Un tableau de données doit être passé à la fonction (d'où le préfixe "array").
     public function hydrate(array $ligne)
     {
-        $this->setNom($ligne['nom']); // Initialisation du nom du personnage
-        $this->setForce((int) $ligne['force']); // Initialisation de la force.
-        $this->setDegats($ligne['degats']); // Initialisation des dégâts.
-        $this->setNiveau($ligne['niveau']); // Initialisation des dégâts.
-        $this->setExperience(1); // Initialisation de l'expérience à 1.
+        foreach ($ligne as $key => $value) {
+            $method = 'set'.ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
     }
 
     public function __toString(): string
