@@ -5,10 +5,12 @@ class Personnage
 {
 
     // Déclaration des attributs et méthodes ici.
+    private $_id = 0;
     private $_nom = 'Inconnu'; // Son nom, par défaut 'Inconnu'.
     private $_force = 50; // La force du personnage, par défaut à 50.
     private $_experience = 1; // Son expérience, par défaut à 1.
     private $_degats = 0; // Ses dégats par défaut
+    private $_niveau = 0;
 
     // Déclarations des constantes en rapport avec la force.
     const FORCE_PETITE = 20;
@@ -37,6 +39,39 @@ class Personnage
         . $this->getexperience();
     }
 
+
+    public function setId(int $id): Personnage
+    {
+        if (!is_int($id)) // S'il ne s'agit pas d'un texte.
+        {
+            trigger_error('L\'id d\'un personnage doit être un entier', E_USER_ERROR);
+            return $this;
+        }
+        $this->_id = $id;
+        return $this;
+    }
+
+    public function getId(): int
+    {
+        return $this->_id;
+    }
+
+    public function setNiveau(int $niveau): Personnage
+    {
+        if (!is_int($niveau)) // S'il ne s'agit pas d'un texte.
+        {
+            trigger_error('Le niveau d\'un personnage doit être un entier', E_USER_ERROR);
+            return $this;
+        }
+        $this->_niveau = $niveau;
+        return $this;
+    }
+
+    public function getNiveau(): int
+    {
+        return $this->_niveau;
+    }    
+    
     public function setNom(string $nom): Personnage
     {
         if (!is_string($nom)) // S'il ne s'agit pas d'un texte.

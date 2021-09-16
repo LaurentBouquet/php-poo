@@ -9,27 +9,21 @@ function chargerClasse(string $classe)
 // pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
 spl_autoload_register('chargerClasse'); 
 
-print("Pour info, la force petite = ".Personnage::FORCE_PETITE."<br/>");
-print("Pour info, la force moyenne = ".Personnage::FORCE_MOYENNE."<br/>");
-print("Pour info, la force grande = ".Personnage::FORCE_GRANDE."<br/>");
-
-print("<h1>Jeu de combat</h1>");
-
-// On crée deux personnages
-$perso1 = new Personnage('Mario');
-Personnage::parler();
-
-$perso2 = new Personnage("Lara", Personnage::FORCE_MOYENNE, 0);
-Personnage::parler();
-
-
-$perso1->frapper($perso2);
-$perso2->frapper($perso1);
-
-print("<br/><br/>Bilan :");
-print($perso1);
-print($perso2);
-
-
-
-
+try {
+    $db = new PDO($dsn, $user, $password);
+    //$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
+    if ($db) {
+        print('<br/>Lecture dans la base de données :');
+        $request = $db->query('SELECT id, nom, `force`, degats, niveau, experience FROM personnages;');
+        while ($ligne = $request->fetch(PDO::FETCH_ASSOC)) // Chaque entrée sera récupérée et placée dans un array.
+        {
+          // On passe les données (stockées dans un tableau) concernant le personnage au constructeur de la classe.
+          // qui va être chargé d'assigner les valeurs qu'on lui a données, aux attributs correspondants.
+          $perso = new Personnage($ligne);                
+          print('<br/>' . $perso->getNom() . ' a '. $perso->getForce() . ' de force, ' . $perso->getDegats()
+            . ' de dégâts, ' . $perso->getExperience() . ' d\'expérience et est au niveau ' . $perso->getNiveau());
+        }
+    }
+} catch (PDOException $e) {
+    print('<br/>Erreur de connexion : ' . $e->getMessage());
+}
