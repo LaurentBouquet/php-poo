@@ -1,15 +1,6 @@
 <?php
 
-function chargerClasse(string $classe)
-{
-  include $classe . '.php'; // On inclut la classe correspondante au paramètre passé.
-}
-
-// On enregistre la fonction en autoload 
-// pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
-spl_autoload_register('chargerClasse'); 
-
-include "conf.php";
+include 'header.php'; 
 
 try {
     $db = new PDO($dsn, $user, $password);
@@ -20,9 +11,12 @@ try {
 
     print('<br/>Liste des personnages :');
     foreach ($personnages as $personnage) {
-      print('<br/>' . $personnage->getNom());
-    }
-    
+      print('<br/>
+      <a target="_blank" href="personnage_view.php?id='.$personnage->getId().'">' 
+      . $personnage->getNom()
+      .'</a>');
+    }    
+
     /*
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
     if ($db) {

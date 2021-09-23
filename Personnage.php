@@ -25,7 +25,6 @@ class Personnage
     {
         $this->hydrate($ligne);
         self::$_nbreJoueurs++;
-        print('<br/> Le personnage "' . $this->getNom() . '" est créé !'); // Message s'affichant une fois que tout objet est créé.
     }
 
     // Un tableau de données doit être passé à la fonction (d'où le préfixe "array").
