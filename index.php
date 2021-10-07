@@ -6,6 +6,32 @@ try {
     $db = new PDO($dsn, $user, $password);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
     
+
+    $unMagicien = new Magicien(
+      [
+        'id'=>7, 
+        'nom' => 'Gandalf',
+        'force' => 20,        
+      ]);
+      print("<br/>Mon nouveau personnage = ".$unMagicien->getNom());
+
+
+      $unAutrePerso = new Archer(
+        [
+          'id'=>8, 
+          'nom' => 'Les godasses',
+          'force' => 20,        
+        ]);
+        print("<br/>Mon nouveau personnage = ".$unAutrePerso->getNom());
+
+      $combat = new TerrainDeCombat();
+      $combat->lancerUnCombat($unMagicien, $unAutrePerso);
+
+
+
+
+    print("<br/><br/>");
+
     $personnagesManager = new PersonnagesManager($db);
     $personnages = $personnagesManager->getList();
 

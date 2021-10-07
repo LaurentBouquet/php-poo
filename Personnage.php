@@ -1,21 +1,26 @@
 <?php
 // Présence du mot-clé class suivi du nom de la classe.
 
-class Personnage
+abstract class Personnage
 {
 
     // Déclaration des attributs et méthodes ici.
     private $_id = 0;
     private $_nom = 'Inconnu'; // Son nom, par défaut 'Inconnu'.
-    private $_force = 50; // La force du personnage, par défaut à 50.
+    protected $_force = 50; // La force du personnage, par défaut à 50.
     private $_experience = 1; // Son expérience, par défaut à 1.
     private $_degats = 0; // Ses dégats par défaut
     private $_niveau = 0;
+    private $_classe = 0;
 
     // Déclarations des constantes en rapport avec la force.
     const FORCE_PETITE = 20;
     const FORCE_MOYENNE = 50;
     const FORCE_GRANDE = 80;
+
+    const MAGICIEN = 1;
+    const ARCHER = 2;
+    const BRUTE = 3;
 
     // Variable statique PRIVÉE.
     private static $_texteADire = 'La partie est démarrée. Qui veut se battre !';
@@ -174,12 +179,27 @@ class Personnage
     }
 
     // Une méthode qui frappera un personnage (suivant la force qu'il a).
-    public function frapper(Personnage $persoAFrapper): Personnage
+    abstract public function frapper(Personnage $persoAFrapper): Personnage;
+
+
+
+    /**
+     * Get the value of _classe
+     */ 
+    public function getClasse()
     {
-        $persoAFrapper->_degats += $this->_force;
-        $this->gagnerExperience();
-        print('<br/> ' . $persoAFrapper->getNom() . ' a été frappé par ' . $this->getNom());
-        return $this;
+        return $this->_classe;
     }
 
+    /**
+     * Set the value of _classe
+     *
+     * @return  self
+     */ 
+    public function setClasse($classe)
+    {
+        $this->_classe = $classe;
+
+        return $this;
+    }
 }

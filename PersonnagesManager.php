@@ -15,14 +15,14 @@ class PersonnagesManager
         return $this;
     }
 
-    public function add(Personnage $perso):Personnage
+    public function add(Personnage $perso): Personnage
     {
         // Préparation de la requête d'insertion.
         // Assignation des valeurs pour le nom, la force, les dégâts, l'expérience et le niveau du personnage.
         // Exécution de la requête.
     }
 
-    public function delete(Personnage $perso):bool
+    public function delete(Personnage $perso): bool
     {
         // Préparation de la requête d'insertion.
         // Assignation des valeurs pour le nom, la force, les dégâts, l'expérience et le niveau du personnage.
@@ -34,29 +34,46 @@ class PersonnagesManager
         $sth = $this->_db->prepare('SELECT id, nom, `force`, degats, niveau, experience FROM personnages WHERE id = ?');
         $sth->execute(array($id));
         $ligne = $sth->fetch();
-        $perso = new Personnage($ligne);   
-        return $perso; 
+        $perso = new Personnage($ligne);
+        return $perso;
     }
 
-    public function getList():array
+    public function getList(): array
     {
         $listeDePersonnages = array();
         // Retourne la liste de tous les personnages.
-        $request = $this->_db->query('SELECT id, nom, `force`, degats, niveau, 
+        $request = $this->_db->query('SELECT id, classe, nom, `force`, degats, niveau, 
         experience FROM personnages;');
         while ($ligne = $request->fetch(PDO::FETCH_ASSOC)) // Chaque entrée sera récupérée et placée dans un array.
         {
-            $perso = new Personnage($ligne);   
-            $listeDePersonnages[] = $perso;          
+            // $perso = new Personnage($ligne);   
+            switch ((int)$ligne['classe']) {
+
+                case Personnage::MAGICIEN:
+                    $perso = new Magicien($ligne);
+                    break;
+
+                case Personnage::ARCHER:
+                    $perso = new Archer($ligne);
+                    break;
+
+                case Personnage::BRUTE:
+                    $perso = new Brute($ligne);
+                    break;
+
+                default:
+                    break;
+            }
+
+            $listeDePersonnages[] = $perso;
         }
-        return $listeDePersonnages;        
+        return $listeDePersonnages;
     }
 
-    public function update(Personnage $perso):bool
+    public function update(Personnage $perso): bool
     {
         // Prépare une requête de type UPDATE.
         // Assignation des valeurs à la requête.
         // Exécution de la requête.
     }
-
 }
