@@ -12,6 +12,7 @@ abstract class Personnage
     private $_degats = 0; // Ses dégats par défaut
     private $_niveau = 0;
     private $_classe = 0;
+    private $_poche = 50;
 
     // Déclarations des constantes en rapport avec la force.
     const FORCE_PETITE = 20;
@@ -33,7 +34,7 @@ abstract class Personnage
     }
 
     // Un tableau de données doit être passé à la fonction (d'où le préfixe "array").
-    public function hydrate(array $ligne)
+    final public function hydrate(array $ligne)
     {
         foreach ($ligne as $key => $value) {
             $method = 'set'.ucfirst($key);
@@ -45,10 +46,11 @@ abstract class Personnage
 
     public function __toString(): string
     {
-        return '<br/>Joueur ' . $this->getNom() . ' : Force = '
-        . $this->getForce() . ' / Dégats = '
-        . $this->getDegats() . ' / Expérience = '
-        . $this->getexperience();
+        return '<br/>Joueur ' . $this->getNom() 
+        . ' : Force = ' . $this->getForce() 
+        . ' / Poche = ' . $this->getPoche() 
+        . ' / Dégats = ' . $this->getDegats() 
+        . ' / Expérience = ' . $this->getexperience();
     }
 
     public function setId(int $id): Personnage
@@ -179,8 +181,11 @@ abstract class Personnage
     }
 
     // Une méthode qui frappera un personnage (suivant la force qu'il a).
-    abstract public function frapper(Personnage $persoAFrapper): Personnage;
+    abstract public function attaquer(Personnage $persoAFrapper): Personnage;
 
+    public function insulter() {      
+        print("<br/>Tête de gland !");
+    }
 
 
     /**
@@ -199,6 +204,26 @@ abstract class Personnage
     public function setClasse($classe)
     {
         $this->_classe = $classe;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of _poche
+     */ 
+    public function getPoche()
+    {
+        return $this->_poche;
+    }
+
+    /**
+     * Set the value of _poche
+     *
+     * @return  self
+     */ 
+    public function setPoche($poche)
+    {
+        $this->_poche = $poche;
 
         return $this;
     }

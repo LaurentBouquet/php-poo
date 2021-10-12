@@ -1,49 +1,67 @@
 <?php
 
-include 'header.php'; 
+include 'header.php';
 
 try {
-    $db = new PDO($dsn, $user, $password);
-    $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
-    
-
-    $unMagicien = new Magicien(
-      [
-        'id'=>7, 
-        'nom' => 'Gandalf',
-        'force' => 20,        
-      ]);
-      print("<br/>Mon nouveau personnage = ".$unMagicien->getNom());
+  $db = new PDO($dsn, $user, $password);
+  $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
 
 
-      $unAutrePerso = new Archer(
-        [
-          'id'=>8, 
-          'nom' => 'Les godasses',
-          'force' => 20,        
-        ]);
-        print("<br/>Mon nouveau personnage = ".$unAutrePerso->getNom());
-
-      $combat = new TerrainDeCombat();
-      $combat->lancerUnCombat($unMagicien, $unAutrePerso);
+  $unMagicien = new MagicienVoleur(
+    [
+      'id' => 7,
+      'nom' => 'Gandalf',
+      'force' => 20,
+    ]
+  );
+  print("<br/>Mon nouveau personnage = " . $unMagicien->getNom());
 
 
+  $unArcher = new Archer(
+    [
+      'id' => 8,
+      'nom' => 'Les godasses',
+      'force' => 20,
+    ]
+  );
+  print("<br/>Mon nouveau personnage = " . $unAutrePerso->getNom());
+
+  
+  $uneBrute = new BruteVoleur(
+    [
+      'id' => 9,
+      'nom' => 'Brutus',
+      'force' => 80,
+    ]
+  );
+  print("<br/>Mon nouveau personnage = " . $unAutrePerso->getNom());
+
+  $combat = new TerrainDeCombat();
+  $combat->lancerUnCombat($unMagicien, $unArcher);
+  $combat->lancerUnCombat($uneBrute, $unArcher);
 
 
-    print("<br/><br/>");
 
-    $personnagesManager = new PersonnagesManager($db);
-    $personnages = $personnagesManager->getList();
 
-    print('<br/>Liste des personnages :');
-    foreach ($personnages as $personnage) {
-      print('<br/>
-      <a target="_blank" href="personnage_view.php?id='.$personnage->getId().'">' 
+  /*
+  print("<br/><br/>");
+
+  $personnagesManager = new PersonnagesManager($db);
+  $personnages = $personnagesManager->getList();
+
+  print('<br/>Liste des personnages :');
+  foreach ($personnages as $personnage) {
+    print('<br/>
+      <a target="_blank" href="personnage_view.php?id=' . $personnage->getId() . '">'
       . $personnage->getNom()
-      .'</a>');
-    }    
+      . '</a>');
+  }
+  */
 
-    /*
+
+
+
+  /*
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Si toutes les colonnes sont converties en string
     if ($db) {
         print('<br/>Lecture dans la base de données :');
@@ -58,8 +76,6 @@ try {
         }
     }
     */
-
-
 } catch (PDOException $e) {
-    print('<br/>Erreur de connexion : ' . $e->getMessage());
+  print('<br/>Erreur de connexion : ' . $e->getMessage());
 }
